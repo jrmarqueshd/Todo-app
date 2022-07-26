@@ -1,38 +1,188 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.container {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
+  padding-top: 4rem;
+}
+
+.task-board {
+  max-width: 768px;
+  width: 100%;
+  color: #fcfaf9;
+}
+
+.task-board .task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.task-board > * {
+  width: 100%;
+}
+
+.task-board h1 {
+  color: #48e5c2;
+  font-size: 2.5rem;
+}
+
+.task-board .task-form {
+  margin-bottom: 30px;
+  display: flex;
+}
+
+.task-board .task-form {
+  margin-bottom: 30px;
+  display: flex;
+}
+
+.task-board .task-form input,
+.task-board .task-form button {
+  padding: 10px 16px;
+  border-radius: 20px;
+  font-size: 1rem;
+  outline: transparent;
+  border: 0;
+}
+
+.task-board .task-form input {
+  width: 100%;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.task-board .task-form button {
+  min-width: 8rem;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  background-color: #48e5c2;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+
+.task-board .react-tabs .react-tabs__tab-list {
+  margin-bottom: 0;
+  border: 0;
+}
+
+.task-board .react-tabs .react-tabs__tab-list .react-tabs__tab {
+  background-color: #434343;
+  border: 0;
+  border-right: 1px solid #333;
+  border-radius: 0;
+  padding: 10px 20px;
+}
+
+.task-board .react-tabs .react-tabs__tab-list .react-tabs__tab:not(:last-child) {
+  border: 0;
+}
+
+.task-board .react-tabs .react-tabs__tab-list .react-tabs__tab.react-tabs__tab--selected {
+  color: #48e5c2;
+}
+
+.task-board .react-tabs .react-tabs__tab-list .react-tabs__tab:first-child {
+  border-top-left-radius: 20px;
+}
+
+.task-board .react-tabs .react-tabs__tab-list .react-tabs__tab:last-child {
+  border-top-right-radius: 20px;
+}
+
+.task-board .react-tabs .react-tabs__tab-list .react-tabs__tab:focus::after {
+  height: 0;
+}
+
+.task-board .react-tabs h2 {
+  font-size: 1.2rem;
+  margin: 0;
+  width: 100%;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #333;
+  padding-bottom: 15px;
+}
+
+.task-board .task-list {
+  display: flex;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  flex-direction: column;
+  gap: 15px;
+  background-color: #434343;
+  padding: 30px;
+  border-radius: 20px;
+  border-top-left-radius: 0;
 }
 
-.App-link {
-  color: #61dafb;
+.task-board .task-list li {
+  font-size: 1.15rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 98.7ms ease-in;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.task-board .task-list li, 
+.task-board .task-list li label {
+  width: 100%;
+}
+
+.task-board .task-list li:not(:last-child) {
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgb(252, 250, 249, 0.2);
+}
+
+.task-board .task-list li:first-child {
+  margin-top: 16px;
+}
+
+.task-board .task-list li:last-child {
+  margin-bottom: 16px;
+}
+
+.task-board .task-list li,
+.task-board .task-list li label,
+.task-board .task-list li svg {
+  cursor: pointer;
+  transition: all 98.7ms ease-in-out;
+}
+
+.task-board .task-list li:hover {
+  opacity: 0.9;
+}
+
+.task-board .task-list .buttons-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.task-board .task-list .buttons-wrapper svg {
+  transition: all 98.7ms ease;
+}
+
+.task-board .task-list .buttons-wrapper svg.icon-check {
+  font-size: 1.35rem;
+}
+
+.task-board .task-list .buttons-wrapper svg.icon-check:hover {
+  color: #48e5c2;
+}
+
+.task-board .task-list .buttons-wrapper svg.icon-remove:hover {
+  color: #ff6347;
+}
+
+@media screen and (min-width: 768px) {
+  .task-board .task-form input,
+  .task-board .task-form button {
+    font-size: 1.3rem;
+    padding: 10px 20px;
   }
-  to {
-    transform: rotate(360deg);
+
+  .task-board .task-form button {
+    min-width: 10rem;
   }
 }
