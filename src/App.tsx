@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { FaCheck, FaFontAwesomeFlag } from "react-icons/fa";
 import toast, { Toaster } from "react-hot-toast";
 import 'react-tabs/style/react-tabs.css';
@@ -9,15 +9,14 @@ import { Status, Task, TaskId } from "./components/TasksList/interfaces";
 import TabsPanel from "./components/TabsPanel";
 
 import './App.css';
+import Search from "./components/Inputs/Search";
 
 function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
 
-  const inputRef = useRef<HTMLInputElement | null>(null)
-
   const validateTask = useCallback((newTask: string | undefined) => {
     return new Promise((resolve, reject) => {
-      if (!inputRef.current?.value?.trim()) {
+      if (!newTask?.trim()) {
         reject("Please insert a value.")
       };
 
@@ -29,12 +28,8 @@ function App() {
     })
   }, [tasks])
 
-  const handleSubmitTask = useCallback(async (e: React.FormEvent) => {
+  const handleSubmitTask = useCallback(async (newTask: string) => {
     try {
-      e.preventDefault();
-
-      const newTask = inputRef.current?.value || ""
-
       await validateTask(newTask);
 
       setTasks((prevTasks) => {
@@ -96,11 +91,7 @@ function App() {
           <h1>Todo App</h1> <a href="https://ofrontender.dev">by Junior Marques</a>
         </header>
 
-        <form onSubmit={handleSubmitTask} className="task-form">
-          <label htmlFor="task"></label>
-          <input type="text" name="task-input" id="task" ref={inputRef} />
-          <button type="submit">Add task</button>
-        </form>
+        <Search onSubmit={handleSubmitTask} />
 
         <TabsPanel 
           tabItems={[
