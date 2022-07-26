@@ -1,14 +1,14 @@
 import React, { useCallback, useRef, useState } from "react";
-import {v4 as uuidv4} from 'uuid';
+import { FaCheck, FaFontAwesomeFlag } from "react-icons/fa";
 import toast, { Toaster } from "react-hot-toast";
 import 'react-tabs/style/react-tabs.css';
+import {v4 as uuidv4} from 'uuid';
 
 import TasksList from "./components/TasksList";
 import { Status, Task, TaskId } from "./components/TasksList/interfaces";
 import TabsPanel from "./components/TabsPanel";
 
 import './App.css';
-import { FaCheck, FaFontAwesomeFlag } from "react-icons/fa";
 
 function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
