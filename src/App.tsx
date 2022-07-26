@@ -1,17 +1,14 @@
 import React, { useCallback, useRef, useState } from "react";
 import {v4 as uuidv4} from 'uuid';
-import { FaTrash, FaCheck } from "react-icons/fa";
 import toast, { Toaster } from "react-hot-toast";
-import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import 'react-tabs/style/react-tabs.css';
 
-import './App.css';
+import TasksList from "./components/TasksList";
+import { Status, Task, TaskId } from "./components/TasksList/interfaces";
+import TabsPanel from "./components/TabsPanel";
 
-interface Task {
-  id: string;
-  label: string;
-  status: 'done' | 'to-do'
-}
+import './App.css';
+import { FaCheck, FaFontAwesomeFlag } from "react-icons/fa";
 
 function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -31,14 +28,6 @@ function App() {
       resolve(true);
     })
   }, [tasks])
-
-  const handleRemoveTask = useCallback((taskId: string) => {
-    setTasks([...tasks.filter(task => task.id !== taskId)]);
-
-    toast(`The task has been deleted.`, {
-      icon: '❕'
-    });
-  }, [tasks]);
 
   const handleSubmitTask = useCallback(async (e: React.FormEvent) => {
     try {
@@ -66,13 +55,21 @@ function App() {
     
   }, [validateTask]);
 
-  const handleCloseTask = useCallback((taskId: string) => {
+  const handleRemoveTask = useCallback((taskId: TaskId) => {
+    setTasks([...tasks.filter(task => task.id !== taskId)]);
+
+    toast(`The task has been deleted.`, {
+      icon: '❕'
+    });
+  }, [tasks]);
+
+  const handleNextStepTask = useCallback((taskId: TaskId, nextStatus?: Status) => {
     setTasks([...tasks.map((task): Task => {
       if (task.id !== taskId) return task;
       
       return {
         ...task,
-        status: "done"
+        status: nextStatus || "done"
       };
     })]);
 
@@ -105,42 +102,47 @@ function App() {
           <button type="submit">Add task</button>
         </form>
 
-        <Tabs>
-          <TabList>
-            <Tab>To-do</Tab>
-            <Tab>Done</Tab>
-          </TabList>
-        
-          <TabPanel>
-            <ul className="task-list">
-              {!tasks.filter(task => task.status === "to-do").length && <p>To-do section is empty.</p>}
-
-              {tasks?.map(({id, label, status}) => status === "to-do" && (
-                <li key={id}>
-                  {label}
-                  <div className="buttons-wrapper">
-                    <FaCheck className="icon-check" onClick={() => handleCloseTask(id)} />
-                    <FaTrash className="icon-remove" onClick={() => handleRemoveTask(id)} />
-                  </div>
-                </li>
-              )).reverse()}
-            </ul>
-          </TabPanel>
-
-          <TabPanel>
-            <ul className="task-list">
-              {!tasks.filter(task => task.status === "done").length && <p>Done section is empty.</p>}
-
-              {tasks?.map(({id, label, status}) => status === "done" && (
-                <li key={id}>
-                  <label className={status} htmlFor="task-1">
-                    <input type="checkbox" name="task-checkbox" id={id} /> {label}</label>
-                    <FaTrash onClick={() => handleRemoveTask(id)} />
-                  </li>
-              ))}
-            </ul>
-          </TabPanel>
-        </Tabs>
+        <TabsPanel 
+          tabItems={[
+            {
+              tabtitle: "To-do",
+              tabContent: <TasksList 
+                tasks={tasks}
+                options={{
+                  taskGroup: "to-do",
+                  nextStep: "in-progress",
+                  icon: FaFontAwesomeFlag
+                }}
+                onNextStepTask={handleNextStepTask}
+                onRemoveTask={handleRemoveTask}
+              />
+            },
+            {
+              tabtitle: "In-progress",
+              tabContent: <TasksList 
+                tasks={tasks}
+                options={{
+                  taskGroup: "in-progress",
+                  nextStep: "done",
+                  icon: FaCheck
+                }}
+                onNextStepTask={handleNextStepTask}
+                onRemoveTask={handleRemoveTask}
+              />
+            },
+            {
+              tabtitle: "Done",
+              tabContent: <TasksList 
+                tasks={tasks}
+                options={{
+                  taskGroup: "done"
+                }}
+                onNextStepTask={handleNextStepTask}
+                onRemoveTask={handleRemoveTask}
+              />
+            }
+          ]}
+        />       
       </div>
     </div>
   );
