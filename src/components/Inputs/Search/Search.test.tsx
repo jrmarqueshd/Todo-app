@@ -15,21 +15,22 @@ describe("Search test", () => {
     expect(screen.getByText("Add task")).toBeInTheDocument();
   })
 
-  it("Should insert value in input and submit correctly", () => {
+  it("Should insert value in input and submit correctly and clear input after", () => {
     const onSubmitMocked = jest.fn();
 
     render(<Search 
       id="task" 
       name="task-Input" 
       placeholder="Insert a task" 
-      value="task test"
       onSubmit={onSubmitMocked} 
     />);
 
     const input = screen.getByPlaceholderText("Insert a task");
     const button = screen.getByText("Add task");
-    userEvent.click(button)
+    userEvent.type(input, "task test")
     expect(input).toHaveValue("task test");
+    userEvent.click(button)
     expect(onSubmitMocked).toHaveBeenCalledTimes(1);
+    expect(input).toHaveValue("");
   })
 })
