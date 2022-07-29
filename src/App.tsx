@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { FaCheck, FaFontAwesomeFlag } from "react-icons/fa";
+import { FaCheck } from "react-icons/fa";
 import toast, { Toaster } from "react-hot-toast";
 import 'react-tabs/style/react-tabs.css';
 import {v4 as uuidv4} from 'uuid';
@@ -26,6 +26,10 @@ function App() {
 
       resolve(true);
     })
+  }, [tasks])
+
+  const tasksLength = useCallback((statusRef: Status) => {
+    return tasks.filter(task => task.status === statusRef)?.length
   }, [tasks])
 
   const handleSubmitTask = useCallback(async (newTask: string) => {
@@ -91,29 +95,21 @@ function App() {
           <h1>Todo App</h1> <a href="https://ofrontender.dev">by Junior Marques</a>
         </header>
 
-        <Search onSubmit={handleSubmitTask} />
+        <Search 
+          id="task" 
+          name="task-Input" 
+          placeholder="Insert a task"
+          onSubmit={handleSubmitTask} 
+        />
 
         <TabsPanel 
           tabItems={[
             {
-              tabtitle: "To-do",
+              tabtitle: `To-do (${tasksLength("to-do")})`,
               tabContent: <TasksList 
                 tasks={tasks}
                 options={{
                   taskGroup: "to-do",
-                  nextStep: "in-progress",
-                  icon: FaFontAwesomeFlag
-                }}
-                onNextStepTask={handleNextStepTask}
-                onRemoveTask={handleRemoveTask}
-              />
-            },
-            {
-              tabtitle: "In-progress",
-              tabContent: <TasksList 
-                tasks={tasks}
-                options={{
-                  taskGroup: "in-progress",
                   nextStep: "done",
                   icon: FaCheck
                 }}
@@ -122,7 +118,7 @@ function App() {
               />
             },
             {
-              tabtitle: "Done",
+              tabtitle: `Done (${tasksLength("done")})`,
               tabContent: <TasksList 
                 tasks={tasks}
                 options={{

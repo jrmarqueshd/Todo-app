@@ -23,7 +23,7 @@ export default function Search({onSubmit, ...props} : SearchProps) {
         handleSubmit()
       }} 
     >
-      <input {...props} type="text" name="task-input" id="task" ref={inputRef} />
+      <input {...props} type="text" ref={inputRef} />
       <button type="submit">Add task</button>
     </form>
   )

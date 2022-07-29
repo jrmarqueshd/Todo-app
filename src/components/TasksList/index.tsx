@@ -16,9 +16,9 @@ export default function TasksList ({ tasks, options, onNextStepTask, onRemoveTas
           {label}
           <div className="buttons-wrapper">
             {Icon && (
-              <Icon className="icon-check" onClick={() => onNextStepTask(id, nextStep)} />
+              <Icon data-testid="icon-check" className="icon-check" onClick={() => onNextStepTask(id, nextStep)} />
             )}
-            <FaTrash className="icon-remove" onClick={() => onRemoveTask(id)} />
+            <FaTrash data-testid="icon-remove" className="icon-remove" onClick={() => onRemoveTask(id)} />
           </div>
         </li>
       )).reverse()}
